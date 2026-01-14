@@ -254,7 +254,7 @@ def download():
     yield tmp.to_netcdf(None)
 
 def url_git():
-    url = "https://github.com/lukasbrunner/shiny_test"
+    url = "https://github.com/lukasbrunner/etccdi_internal_variability"
     return ui.tags.a("GitHub", href=url, target='_blank')
 
 def url_by():
