@@ -1,0 +1,8 @@
+shiny
+matplotlib
+xarray
+cartopy
+natsort
+regionmask
+seaborn
+netcdf4
