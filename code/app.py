@@ -15,8 +15,17 @@ from core.core_functions import aggregate_members, mask_domain, cut_region
 from core.mapplot_functions import plot_map_base
 from core.utils import index_acronym_map
 
-ui.panel_title("Shiny test suit for ETCCDI - LE paper")
-ui.p("For more information, see the sidebar (click '>' top left) or the accompanying publication TODO: add link.")
+ui.panel_title("Variabiliy Atlas for ETCCDI climate extreme indices")
+ui.p("For more information, see the sidebar (click '>' top left) or the accompanying publication TODO: add link onced published.")
+ui.HTML('<div style="height:0.75rem"></div>')
+ui.h5("Note to reviewers:")
+ui.p(
+"""
+This is a preliminary version of the atlas for review. Please feel free to include
+suggestions or comments on the atlas in your review. The final version will include more detailed information
+on background, data, and methods as well as references to the relevant locations in the final manusript.  
+The source code is available on GitHub: https://github.com/lukasbrunner/etccdi_internal_variability  
+""")
 ui.HTML('<div style="height:0.75rem"></div>')
 
 
