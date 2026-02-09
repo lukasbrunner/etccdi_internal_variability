@@ -32,7 +32,7 @@ def _add_nice_colorbar(p):
     plt.colorbar(p, cax=cax)
 
 
-def plot_map_base(da, ax=None, nice_colorbar=True, **kwargs):
+def plot_map_base(da, ax=None, nice_colorbar=True, dpi=None, **kwargs):
     # kwargs = _cbar_defaults(kwargs)
     kwargs = _cmap_defaults(kwargs)
 
@@ -40,7 +40,7 @@ def plot_map_base(da, ax=None, nice_colorbar=True, **kwargs):
         central_longitude = 0
         if da['lon'].min() > 45 and da['lon'].max() > 180:
             central_longitude = da['lon'].mean().item()
-        fig, ax = plt.subplots(subplot_kw={'projection': ccrs.PlateCarree(central_longitude=central_longitude)})
+        fig, ax = plt.subplots(dpi=dpi, subplot_kw={'projection': ccrs.PlateCarree(central_longitude=central_longitude)})
 
     p = da.plot.pcolormesh(
         ax=ax,
