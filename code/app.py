@@ -258,9 +258,10 @@ def download_plot():
         vmax=input.max() if input.plot_options() else None,
         # cbar_kwargs={'fraction': input.cbar_fraction()} if input.plot_options() else {}
         nice_colorbar=False,
+        dpi=150,
     )
     buf = io.BytesIO()
-    fig.savefig(buf, format='png', dpi=150, bbox_inches='tight')
+    fig.savefig(buf, format='png', bbox_inches='tight')
     plt.close(fig)
     buf.seek(0)
     yield buf.getvalue()
