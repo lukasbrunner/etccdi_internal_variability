@@ -195,10 +195,30 @@ def _reset_manual_options():
 #         nr_members = input.nr_members()
 
 
+def Mauritsen2019():
+    url = "https://doi.org/10.1029/2018MS001400"
+    return ui.tags.a("2019", href=url, target='_blank')
+
+def Olonscheck2023():
+    url = "https://doi.org/10.1029/2023MS003790"
+    return ui.tags.a("2023", href=url, target='_blank')
+
+def ETCCDI():
+    url = "https://etccdi.pacificclimate.org/list_27_indices.shtml"
+    return ui.tags.a("ETCCDI", href=url, target='_blank')
+
 with ui.sidebar(open='closed'):  
     ui.HTML("<b>Data and Methods</b>")
-    ui.HTML("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.")
-
+    @render.ui
+    def data(): 
+        return ui.div(
+            "The Variability Atlas is based on data from the global climte model MPI-ESM v1.2 (same as in CMIP6)) as described ",
+            "in Mauritsen et al. (", Mauritsen2019(), ") and Olonscheck et al. (", Olonscheck2023(), "). ",
+            "It includes 26 extreme climate indices as defined by the ", ETCCDI(), " based on daily maximum and minimum temperature ",
+            "and daily precipitation. The atlas provides different metrics to quantify internal variability of these indices ",
+            "which is represented by the spread across the 50 initial condition members of the MPI-ESM model. ",
+            "For more details, please see the accompanying publication (TODO: add link once published)."
+            )
 
 def calc_data():
     da = load_data(input.index(), celsius=input.celsius())
@@ -230,19 +250,17 @@ def plot():
 @render.download(filename="plot.png", label='Download plot', media_type='image/png')
 def download_plot():
     tmp = calc_data()
-    # create the same figure as the plot output
-    fig, _, _ = plot_map_base(
+    fig, ax, _ = plot_map_base(
         tmp, 
-        dpi=150,
         cmap=input.cmap() if input.plot_options() else 'viridis', 
         levels=input.levels() if input.plot_options() else 10,
         vmin=input.min() if input.plot_options() else None,
         vmax=input.max() if input.plot_options() else None,
-        nice_colorbar=False,
         # cbar_kwargs={'fraction': input.cbar_fraction()} if input.plot_options() else {}
+        nice_colorbar=False,
     )
     buf = io.BytesIO()
-    fig.savefig(buf, format='png', dpi=150, bbox_inches='tight')
+    fig.savefig(buf, format='png', bbox_inches='tight')
     plt.close(fig)
     buf.seek(0)
     yield buf.getvalue()
