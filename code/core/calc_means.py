@@ -13,7 +13,7 @@ startyear = 1995
 endyear = 2014
 scenario = 'historical'
 base_path = '/work/uc1275/MPI-GE_ETCCDI_indices'  # Adjust to local data path
-era_path = '/work/uc1275/LukasBrunner/ERA5/ETCCDI_g025'  # Adjust to local data path
+era_path = '/work/uc1275/LukasBrunner/ERA5/ETCCDI_gMPI'  # Adjust to local data path
 
 
 def aggregations(index: str) -> str:

@@ -14,8 +14,6 @@ def set_temperature_unit(da, to_celsius=False):
             da.attrs['units'] = '°C'
         elif unit_old in ['°c', 'celsius', 'degc', 'deg c', 'c']:
             pass  # already in °C
-        else:
-            raise ValueError(f"Cannot convert from unit '{unit_old}' to °C")
     else:
         if unit_old in ['°c', 'celsius', 'degc', 'deg c', 'c']:
             da.values += 273.15

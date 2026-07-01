@@ -58,7 +58,7 @@ index_acronym_map = {
     'gsl': 'GSL',
     # --- precipitation-based ---
     # no threshold
-    'prcptot': 'pr',
+    'prcptot': 'PRCPTOT',
     'sdii': 'SDII',
     'rx1day': 'Rx1day',
     'rx5day': 'Rx5day',
