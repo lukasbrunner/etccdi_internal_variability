@@ -14,7 +14,7 @@ sys.path.append(os.path.join(dir_path, '..', 'code'))
 from core.io_functions import load_data
 from core.core_functions import aggregate_members, mask_domain, cut_region
 from core.mapplot_functions import plot_map_base
-from core.utils import index_acronym_map
+from core.utils import index_acronym_map, index_longname_map, index_explanation_map
 
 
 def Mauritsen2019():
@@ -182,7 +182,7 @@ with ui.div(style="max-width: 900px; margin: 0 auto;"):
             return f"lat {val['lat'].item():.1f}°, lon {val['lon'].item():.1f}°: {value}"
 
 
-with ui.div(style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 0.5rem;"):
+with ui.div(style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; align-items: center; margin-top: 0.5rem;"):
     @render.download(filename=lambda: f"{input.index()}_{input.aggregation()}.png", label='Download plot', media_type='image/png')
     def download_plot():
         fig, _, _ = make_figure(dpi=300)
@@ -195,6 +195,22 @@ with ui.div(style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: c
     @render.download(filename=lambda: f"{input.index()}_{input.aggregation()}.nc", label='Download data', media_type='application/x-netcdf')
     def download():
         yield calc_data().to_netcdf(None)
+
+    core_ui.tooltip(
+        ui.tags.span("ⓘ", style="cursor: help;"),
+        f"TXx – {index_longname_map['txx']}: {index_explanation_map['txx']}",  # default index; kept in sync below
+        id="index_info",
+    )
+
+
+# keep the index explanation tooltip in sync with the selected index
+@reactive.effect
+def _update_index_info():
+    idx = input.index()
+    ui.update_tooltip(
+        "index_info",
+        f"{index_acronym_map[idx]} – {index_longname_map[idx]}: {index_explanation_map[idx]}",
+    )
 
 
 ui.div(
