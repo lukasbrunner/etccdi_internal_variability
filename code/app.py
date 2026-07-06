@@ -54,7 +54,14 @@ with ui.layout_column_wrap(width=.5):
     with ui.card():
         ui.input_select(
             "index",
-            "Extreme index:",
+            ui.tags.span(
+                "Extreme index: ",
+                core_ui.tooltip(
+                    ui.tags.span("ⓘ", style="cursor: help;"),
+                    f"TXx – {index_longname_map['txx']}: {index_explanation_map['txx']}",  # default index; kept in sync below
+                    id="index_info",
+                ),
+            ),
             index_acronym_map,
         )
         ui.input_select(
@@ -195,12 +202,6 @@ with ui.div(style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: c
     @render.download(filename=lambda: f"{input.index()}_{input.aggregation()}.nc", label='Download data', media_type='application/x-netcdf')
     def download():
         yield calc_data().to_netcdf(None)
-
-    core_ui.tooltip(
-        ui.tags.span("ⓘ", style="cursor: help;"),
-        f"TXx – {index_longname_map['txx']}: {index_explanation_map['txx']}",  # default index; kept in sync below
-        id="index_info",
-    )
 
 
 # keep the index explanation tooltip in sync with the selected index
