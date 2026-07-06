@@ -223,5 +223,3 @@ ui.div(
     url_by(), " Lukas Brunner; Source code on ", url_git(),
     style="margin-top: 3rem; padding-top: 0.75rem; border-top: 1px solid rgba(128, 128, 128, .35); text-align: center; font-size: 0.875rem;",
 )
-
-ui.tags.script("document.querySelectorAll('.collapse-toggle').forEach(b => b.title = 'Show data and methods');")
