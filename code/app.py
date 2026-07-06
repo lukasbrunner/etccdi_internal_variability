@@ -39,14 +39,19 @@ def url_by():
 
 
 ui.panel_title("Variability Atlas for ETCCDI climate extreme indices")
-ui.p("For more information, see the sidebar (click '>' top left) or the accompanying publication TODO: add link once published.")
+ui.p("For more information, see the accompanying publication (TODO: add link once published).")
 ui.HTML('<div style="height:0.75rem"></div>')
 
 
-# Add a bit of inner spacing for card contents
+# Add a bit of inner spacing for card contents; make the sidebar toggle more prominent
 ui.tags.style('''
 .bslib-card {
     padding: 0.5rem 1rem;
+}
+.collapse-toggle .collapse-icon {
+    width: 1.6rem;
+    height: 1.6rem;
+    color: var(--bs-primary, #0d6efd);
 }
 ''')
 
@@ -218,3 +223,5 @@ ui.div(
     url_by(), " Lukas Brunner; Source code on ", url_git(),
     style="margin-top: 3rem; padding-top: 0.75rem; border-top: 1px solid rgba(128, 128, 128, .35); text-align: center; font-size: 0.875rem;",
 )
+
+ui.tags.script("document.querySelectorAll('.collapse-toggle').forEach(b => b.title = 'Show data and methods');")
