@@ -1,6 +1,7 @@
 import io
 import os
 import sys
+import numpy as np
 import matplotlib.pyplot as plt
 from shiny import render, reactive, req
 from shiny import ui as core_ui
@@ -156,10 +157,29 @@ def make_figure(dpi=None):
 
 
 with ui.div(style="max-width: 900px; margin: 0 auto;"):
-    @render.plot()
-    def plot():
-        fig, _, _ = make_figure()
-        return fig
+    with ui.hold():
+        @render.plot()
+        def plot():
+            fig, _, _ = make_figure()
+            return fig
+    core_ui.output_plot("plot", hover=True)
+
+    with ui.div(style="text-align: center; min-height: 1.5rem; font-size: 0.875rem; opacity: 0.7;"):
+        @render.text
+        def hover_info():
+            h = input.plot_hover()
+            if not h:
+                return ""
+            da = calc_data()
+            # hover x is in projection coordinates: shift by the central longitude
+            # (same rule as in plot_map_base) and wrap into the data's lon convention
+            central_lon = da['lon'].mean().item() if da['lon'].min() > 45 and da['lon'].max() > 180 else 0
+            lon = h['x'] + central_lon
+            lon = lon % 360 if da['lon'].max() > 180 else (lon + 180) % 360 - 180
+            val = da.sel(lon=lon, lat=h['y'], method='nearest')
+            unit = da.attrs.get('units', '')
+            value = 'no data' if np.isnan(val) else f"{float(val):.2f}{'' if unit == '-' else ' ' + unit}"
+            return f"lat {val['lat'].item():.1f}°, lon {val['lon'].item():.1f}°: {value}"
 
 
 with ui.div(style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 0.5rem;"):
