@@ -40,16 +40,6 @@ def url_by():
 ui.panel_title("Variability Atlas for ETCCDI climate extreme indices")
 ui.p("For more information, see the sidebar (click '>' top left) or the accompanying publication TODO: add link once published.")
 ui.HTML('<div style="height:0.75rem"></div>')
-ui.h5("Note to reviewers:")
-ui.p(
-    """
-    This is a preliminary version of the atlas for review. Please feel free to include
-    suggestions or comments on the atlas in your review. The final version will include more detailed information
-    on background, data, and methods as well as references to the relevant locations in the final manuscript.
-    The source code is available on """,
-    url_git(), ".",
-)
-ui.HTML('<div style="height:0.75rem"></div>')
 
 
 # Add a bit of inner spacing for card contents
@@ -88,14 +78,15 @@ with ui.layout_column_wrap(width=.5):
         ui.input_switch(
             'celsius',
             ui.tags.span(
-                "Temperature in °C (default Kelvin) ",
+                "Temperature in °C ",
                 core_ui.tooltip(
                     ui.tags.span("ⓘ", style="cursor: help;"),
-                    "This only affects temperature-based indices. "
-                    "The coefficient of variation is not available for indices in °C.",
+                    "Only affects temperature-based indices. "
+                    "The coefficient of variation is always computed with temperatures in Kelvin "
+                    "(see the accompanying publication for details).",
                 ),
             ),
-            False,
+            True,
         )
 
     with ui.card():
@@ -124,11 +115,13 @@ with ui.layout_column_wrap(width=1):
 with ui.sidebar(open='closed'):
     ui.HTML("<b>Data and Methods</b>")
     ui.div(
-        "The Variability Atlas is based on data from the global climate model MPI-ESM v1.2 (same as in CMIP6) as described ",
+        "The Variability Atlas is based on data from the global climate model MPI-ESM1.2 (CMIP6 configuration) as described ",
         "in Mauritsen et al. (", Mauritsen2019(), ") and Olonscheck et al. (", Olonscheck2023(), "). ",
-        "It includes 26 extreme climate indices as defined by the ", ETCCDI(), " based on daily maximum and minimum temperature ",
-        "and daily precipitation. The atlas provides different metrics to quantify internal variability of these indices ",
-        "which is represented by the spread across the 50 initial condition members of the MPI-ESM model. ",
+        "It includes 26 extreme climate indices as defined by the ", ETCCDI(), " (all core indices except the user-defined Rnnmm), ",
+        "based on daily maximum and minimum temperature and daily precipitation. ",
+        "For each of the 50 initial-condition ensemble members, the annual indices are averaged over the 20-year period 1995-2014; ",
+        "relative-threshold indices use the 1961-1990 base period. ",
+        "The atlas provides different metrics of the spread across the members, which isolates the effect of internal climate variability. ",
         "For more details, please see the accompanying publication (TODO: add link once published)."
     )
 
@@ -137,7 +130,8 @@ with ui.sidebar(open='closed'):
 def calc_data():
     req(input.lon_min() is not None, input.lon_max() is not None,
         input.lat_min() is not None, input.lat_max() is not None)
-    da = load_data(input.index(), celsius=input.celsius())
+    # CV is always computed from Kelvin (the app's celsius setting only affects the other statistics)
+    da = load_data(input.index(), celsius=input.celsius() and input.aggregation() != 'cv')
     try:
         da = aggregate_members(da, input.aggregation())  # defaults to member mean
     except ValueError as e:
