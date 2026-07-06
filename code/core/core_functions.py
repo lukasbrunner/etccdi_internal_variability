@@ -82,7 +82,9 @@ def aggregate_members(da, method='mean'):
         # NOTE: cv is not well defined for negative means
         # this happens if temperature is in degC
         if np.any(mean < 0):
-            raise ValueError
+            raise ValueError(
+                'The coefficient of variation is not well defined for fields with '
+                'negative values. For temperature indices use Kelvin instead of °C.')
             
         attrs = da.attrs
         da = da.std('member') / mean

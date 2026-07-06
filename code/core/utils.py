@@ -105,7 +105,7 @@ index_longname_map = {
     'rx1day': 'Maximum 1-day precipitation',
     'rx5day': 'Maximum 5-day precipitation',
     'cwd': 'Maximum consecutive wet days',
-    'cdd': 'Maximum consecuitve dry days',
+    'cdd': 'Maximum consecutive dry days',
     # relative threshold
     'r95p': 'Precipitation from heavy rain days',
     'r99p': 'Precipitation from very heavy rain days',
