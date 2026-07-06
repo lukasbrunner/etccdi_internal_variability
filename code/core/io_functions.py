@@ -26,8 +26,9 @@ def set_temperature_unit(da, to_celsius=False):
 def load_data(index, celsius=True):
     fn = f'{index}_1995-2014.nc'
     da = xr.open_dataset(os.path.join(base_path, fn), decode_timedelta=False, decode_times=time_coder)[f'{index}']
-    da = set_temperature_unit(da, to_celsius=celsius)
-    return da  
+    if index != 'dtr':  # dtr is a temperature difference: identical in K and °C, offset conversion would be wrong
+        da = set_temperature_unit(da, to_celsius=celsius)
+    return da
 
 
 def load_data_era(index):
