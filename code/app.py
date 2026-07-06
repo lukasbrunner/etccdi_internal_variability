@@ -39,7 +39,7 @@ def url_by():
 
 
 ui.panel_title("Variability Atlas for ETCCDI climate extreme indices")
-ui.p("For more information, see the accompanying publication (TODO: add link once published).")
+ui.p("For more information, see Data and Methods in the side bar.")
 ui.HTML('<div style="height:0.75rem"></div>')
 
 
