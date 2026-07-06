@@ -89,7 +89,7 @@ def aggregate_members(da, method='mean'):
         da.attrs = attrs
         da.attrs['long_name'] = '{} members coefficient of variation'.format(
             da.attrs.get('long_name', da.name))
-        da.attrs['units'] = '1'
+        da.attrs['units'] = '-'
         return da
 
 
