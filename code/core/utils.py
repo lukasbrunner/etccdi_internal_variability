@@ -1,3 +1,7 @@
+"""Per-ETCCDI-index lookup tables: unit, display acronym, plain-language
+explanation, and short display name, for all 26 core ETCCDI indices (excludes
+the user-defined Rnnmm)."""
+
 index_unit_map = {
     # --- temperature-based ---
     # no threshold
@@ -71,11 +75,6 @@ index_acronym_map = {
     'r10mm': 'R10mm',
     'r20mm': 'R20mm',    
 }
-
-# TODO: Settle on a terminology
-# - Just the acronyms (e.g., 'SU')
-# - Meaning (e.g., tasmax > 25degC)
-# - Longname (e.g., Summer days) --> in particular for pr indices this differs between studies!
 
 # Lay descriptions of the annual index calculation (percentile-based indices
 # use the 1961-1990 base period as reference)

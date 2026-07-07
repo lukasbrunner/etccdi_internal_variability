@@ -9,12 +9,14 @@ from shiny.express import input, ui
 from shiny.types import SafeException
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
-sys.path.append(os.path.join(dir_path, '..', 'code'))
+sys.path.append(dir_path)
 
-from core.io_functions import load_data
+from core.io_functions import load_data, load_metadata
 from core.core_functions import aggregate_members, mask_domain, cut_region
 from core.mapplot_functions import plot_map_base
-from core.utils import index_acronym_map, index_longname_map, index_explanation_map
+from core.utils import index_acronym_map
+
+_default_meta = load_metadata('txx')
 
 
 def Mauritsen2019():
@@ -63,7 +65,7 @@ with ui.layout_column_wrap(width=.5):
                 "Extreme index: ",
                 core_ui.tooltip(
                     ui.tags.span("ⓘ", style="cursor: help;"),
-                    f"TXx – {index_longname_map['txx']}: {index_explanation_map['txx']}",  # default index; kept in sync below
+                    f"TXx – {_default_meta['description']}: {_default_meta['explanation']}",  # default index; kept in sync below
                     id="index_info",
                 ),
             ),
@@ -213,9 +215,10 @@ with ui.div(style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: c
 @reactive.effect
 def _update_index_info():
     idx = input.index()
+    meta = load_metadata(idx)
     ui.update_tooltip(
         "index_info",
-        f"{index_acronym_map[idx]} – {index_longname_map[idx]}: {index_explanation_map[idx]}",
+        f"{index_acronym_map[idx]} – {meta['description']}: {meta['explanation']}",
     )
 
 

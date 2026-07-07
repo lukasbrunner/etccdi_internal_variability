@@ -1,14 +1,9 @@
+"""Map-plotting helpers built on cartopy's PlateCarree projection."""
 import numpy as np
 import xarray as xr
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-
-# def _cbar_defaults(kwargs):
-#     cbar_kwargs_defaults = {'label': '', 'fraction': .024, 'pad': .01}
-#     cbar_kwargs_defaults.update(kwargs.get('cbar_kwargs', {}))
-#     kwargs['cbar_kwargs'] = cbar_kwargs_defaults
-#     return kwargs
 
 
 def _cmap_defaults(kwargs):
@@ -33,7 +28,34 @@ def _add_nice_colorbar(p):
 
 
 def plot_map_base(da, ax=None, nice_colorbar=True, dpi=None, **kwargs):
-    # kwargs = _cbar_defaults(kwargs)
+    """Plot a 2D (lat, lon) DataArray as a pcolormesh map.
+
+    Auto-picks a central longitude for [0, 360]-convention data.
+
+    Parameters
+    ----------
+    da : xarray.DataArray
+        2D field with ``lat``/``lon`` coordinates.
+    ax : matplotlib.axes.Axes, optional
+        Existing (cartopy) axes to plot into. Default is ``None``, which
+        creates a new figure with a ``PlateCarree`` projection.
+    nice_colorbar : bool, optional
+        Add a manually-sized colorbar with matched height rather than
+        matplotlib's default. Default is ``True``.
+    dpi : int, optional
+        Figure resolution, only used when ``ax`` is ``None``. Default is
+        ``None``.
+    **kwargs
+        Passed through to xarray's ``.plot.pcolormesh`` (e.g. ``cmap``,
+        ``levels``, ``vmin``, ``vmax``).
+
+    Returns
+    -------
+    fig : matplotlib.figure.Figure
+    ax : matplotlib.axes.Axes
+    p : matplotlib.collections.QuadMesh
+        The pcolormesh artist.
+    """
     kwargs = _cmap_defaults(kwargs)
 
     if ax is None:
@@ -41,6 +63,8 @@ def plot_map_base(da, ax=None, nice_colorbar=True, dpi=None, **kwargs):
         if da['lon'].min() > 45 and da['lon'].max() > 180:
             central_longitude = da['lon'].mean().item()
         fig, ax = plt.subplots(dpi=dpi, subplot_kw={'projection': ccrs.PlateCarree(central_longitude=central_longitude)})
+    else:
+        fig = ax.get_figure()
 
     p = da.plot.pcolormesh(
         ax=ax,

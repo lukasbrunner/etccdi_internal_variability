@@ -1,11 +1,15 @@
+"""Ancillary DJF/JJA seasonal PRCPTOT climatology, beyond the manuscript's main
+(annual-only) analysis. Reads monthly (`*_mon_*.nc`) MPI-GE files directly,
+since seasonal binning requires sub-annual resolution.
+"""
 import os
 import numpy as np
 import xarray as xr
 from natsort import natsorted
 from glob import glob
-from datetime import datetime
 
-from core.utils import index_unit_map, index_acronym_map, index_longname_map
+from core.utils import index_unit_map, index_acronym_map, index_longname_map, index_explanation_map
+from core.calc_means import add_metadata, SOURCE_MPI_GE
 
 time_coder = xr.coders.CFDatetimeCoder(use_cftime=True)
 
@@ -24,6 +28,26 @@ def load_aggregate_seasonal_prcptot(
     endyear: int = endyear,
     overwrite: bool = False,
 ) -> xr.Dataset:
+    """Build the 20-year DJF or JJA PRCPTOT climatology Dataset (dims: member, lat, lon).
+
+    Parameters
+    ----------
+    season : {'DJF', 'JJA'}
+        Season to aggregate to.
+    startyear : int, optional
+        First year of the analysis period. Default is ``1995``.
+    endyear : int, optional
+        Last year of the analysis period. Default is ``2014``.
+    overwrite : bool, optional
+        Unused; reserved for a future skip-if-exists check. Default is
+        ``False``.
+
+    Returns
+    -------
+    xarray.Dataset
+        Single-variable Dataset named ``'prcptot'``, dims
+        ``(member, lat, lon)``.
+    """
     assert season in ('DJF', 'JJA')
 
     print(f'Load {index=}, {season=}')
@@ -55,29 +79,16 @@ def load_aggregate_seasonal_prcptot(
         units=index_unit_map[index],
         long_name=index_acronym_map[index],
         description=index_longname_map[index],
+        explanation=index_explanation_map[index],
     )
     ds = da.to_dataset(name=index)
-    return ds
-
-
-def add_metadata(ds: xr.Dataset, season: str) -> xr.Dataset:
-    ds.attrs = {
-        'title': f'{startyear}-{endyear} {season} mean of PRCPTOT',
-        'further_info': 'https://etccdi.pacificclimate.org/list_27_indices.shtml',
-        'processing_scripts': 'TODO: Git',
-        'source': 'MPI-ESM1-2-LR; Olonscheck et al. (2023): https://doi.org/10.1029/2023MS003790',
-        'creator': 'CC BY Lukas Brunner, University of Hamburg (lukas.brunner@uni-hamburg.de; https://orcid.org/0000-0001-5760-4524)',
-        'institution': 'University of Hamburg',
-        'creation_date': datetime.today().strftime('%Y-%m-%d %H:%M'),
-        'reference': 'TODO: paper',
-    }
     return ds
 
 
 if __name__ == '__main__':
     for season in ('DJF', 'JJA'):
         ds = load_aggregate_seasonal_prcptot(season, startyear=startyear, endyear=endyear)
-        ds = add_metadata(ds, season)
+        ds = add_metadata(ds, title=f'{startyear}-{endyear} {season} mean of PRCPTOT', source=SOURCE_MPI_GE)
         fn_save = f'{index}-{season.lower()}_{startyear}-{endyear}.nc'
         ds.to_netcdf(os.path.join(save_path, fn_save))
         print(f'Saved {fn_save}')
