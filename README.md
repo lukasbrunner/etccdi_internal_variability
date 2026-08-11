@@ -7,6 +7,8 @@ how internal climate variability affects the 26 core ETCCDI climate extreme
 indices, and introduces the *Variability Atlas* as a tool for exploring this
 effect interactively.
 
+This document was created by a Claude Coding agent.
+
 Shiny app: https://019bbc84-e87b-2fef-8974-9e37125a2551.share.connect.posit.cloud/
 
 ## The three layers of the Variability Atlas
