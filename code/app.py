@@ -18,6 +18,9 @@ from core.utils import index_acronym_map
 
 _default_meta = load_metadata('txx')
 
+def Brunner2026():
+    url = "https://doi.org/10.1088/1748-9326/ae9c57"
+    return ui.tags.a("2026", href=url, target='_blank')
 
 def Mauritsen2019():
     url = "https://doi.org/10.1029/2018MS001400"
@@ -137,7 +140,7 @@ with ui.sidebar(open='closed'):
         "For each of the 50 initial-condition ensemble members, the annual indices are averaged over the 20-year period 1995-2014; ",
         "relative-threshold indices use the 1961-1990 base period. ",
         "The atlas provides different metrics of the spread across the members, which isolates the effect of internal climate variability. ",
-        "For more details, please see the accompanying publication (TODO: add link once published)."
+        "For more details, please see the accompanying publication: Brunner et al. (", Brunner2026(), ")."
     )
 
 
