@@ -1,8 +1,7 @@
 # Variability Atlas
 
 Code companion to *"The Variability Atlas: How internal climate variability
-affects the estimation of climate extremes indices"* (Brunner et al., University
-of Hamburg). The paper uses a 50-member MPI-ESM1.2 large ensemble to quantify
+affects the estimation of climate extremes indices"* (Brunner et al., 2026, https://doi.org/10.1088/1748-9326/ae9c57). The paper uses a 50-member MPI-ESM1.2 large ensemble to quantify
 how internal climate variability affects the 26 core ETCCDI climate extreme
 indices, and introduces the *Variability Atlas* as a tool for exploring this
 effect interactively.
