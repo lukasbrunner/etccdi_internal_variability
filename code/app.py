@@ -44,7 +44,7 @@ def url_by():
 
 
 ui.panel_title("Variability Atlas for ETCCDI climate extreme indices")
-ui.p("For more information, see Data and Methods in the side bar ('>' top left corner) or Brunner et al. (", Brunner2026(), ").")
+ui.p("For more information, see Data and Methods in the side bar ('>' top left corner) or Brunner et al. (", Brunner2026(), "). TEMPORARY NOTE: The app is running on a free version of Connect Cloud might run ouf of credits due to peak interest around the paper publication. If it does not work please rey again after October 10th 2026.")
 ui.HTML('<div style="height:0.75rem"></div>')
 
 
