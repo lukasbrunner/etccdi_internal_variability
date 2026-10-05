@@ -15,7 +15,7 @@ startyear = 1995
 endyear = 2014
 
 if __name__ == '__main__':
-    for index in ['txx']:  # only one index needed for now
+    for index in ['tx90p']:  # only one index needed for now
         ds = load_aggregate_data_era5(index, startyear=startyear, endyear=endyear)
         ds = add_metadata(
             ds,
